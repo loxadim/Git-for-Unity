@@ -5,38 +5,60 @@ namespace Unity.VersionControl.Git
     class LogFacade : ILogging
     {
         private readonly string context;
+        private readonly LogAdapterBase logger;
+        private bool? traceEnabled;
+
+        public bool TracingEnabled
+        {
+            get => traceEnabled.HasValue ? traceEnabled.Value : LogHelper.TracingEnabled;
+            set
+            {
+                if (traceEnabled.HasValue)
+                    traceEnabled = value;
+                else
+                    LogHelper.TracingEnabled = value;
+            }
+        }
 
         public LogFacade(string context)
         {
             this.context = context;
+            logger = LogHelper.LogAdapter;
+        }
+
+        public LogFacade(string context, LogAdapterBase logger, bool traceEnabled = false)
+        {
+            this.context = context;
+            this.logger = logger;
+            this.traceEnabled = traceEnabled;
         }
 
         public void Info(string message)
         {
-            LogHelper.LogAdapter.Info(context, message);
+            logger.Info(context, message);
         }
 
         public void Debug(string message)
         {
 #if GFU_DEBUG_BUILD
-            LogHelper.LogAdapter.Debug(context, message);
+            logger.Debug(context, message);
 #endif
         }
 
         public void Trace(string message)
         {
-            if (!LogHelper.TracingEnabled) return;
-            LogHelper.LogAdapter.Trace(context, message);
+            if (!TracingEnabled) return;
+            logger.Trace(context, message);
         }
 
         public void Info(string format, params object[] objects)
         {
-            Info(String.Format(format, objects));
+            Info(string.Format(format, objects));
         }
 
         public void Info(Exception ex, string message)
         {
-            Info(String.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
+            Info(string.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
         }
 
         public void Info(Exception ex)
@@ -46,20 +68,20 @@ namespace Unity.VersionControl.Git
 
         public void Info(Exception ex, string format, params object[] objects)
         {
-            Info(ex, String.Format(format, objects));
+            Info(ex, string.Format(format, objects));
         }
 
         public void Debug(string format, params object[] objects)
         {
 #if GFU_DEBUG_BUILD
-            Debug(String.Format(format, objects));
+            Debug(string.Format(format, objects));
 #endif
         }
 
         public void Debug(Exception ex, string message)
         {
 #if GFU_DEBUG_BUILD
-            Debug(String.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
+            Debug(string.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
 #endif
         }
 
@@ -73,51 +95,51 @@ namespace Unity.VersionControl.Git
         public void Debug(Exception ex, string format, params object[] objects)
         {
 #if GFU_DEBUG_BUILD
-            Debug(ex, String.Format(format, objects));
+            Debug(ex, string.Format(format, objects));
 #endif
         }
 
         public void Trace(string format, params object[] objects)
         {
-            if (!LogHelper.TracingEnabled) return;
+            if (!TracingEnabled) return;
 
-            Trace(String.Format(format, objects));
+            Trace(string.Format(format, objects));
         }
 
         public void Trace(Exception ex, string message)
         {
-            if (!LogHelper.TracingEnabled) return;
+            if (!TracingEnabled) return;
 
-            Trace(String.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
+            Trace(string.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
         }
 
         public void Trace(Exception ex)
         {
-            if (!LogHelper.TracingEnabled) return;
+            if (!TracingEnabled) return;
 
             Trace(ex, string.Empty);
         }
 
         public void Trace(Exception ex, string format, params object[] objects)
         {
-            if (!LogHelper.TracingEnabled) return;
+            if (!TracingEnabled) return;
 
-            Trace(ex, String.Format(format, objects));
+            Trace(ex, string.Format(format, objects));
         }
 
         public void Warning(string message)
         {
-            LogHelper.LogAdapter.Warning(context, message);
+            logger.Warning(context, message);
         }
 
         public void Warning(string format, params object[] objects)
         {
-            Warning(String.Format(format, objects));
+            Warning(string.Format(format, objects));
         }
 
         public void Warning(Exception ex, string message)
         {
-            Warning(String.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
+            Warning(string.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
         }
 
         public void Warning(Exception ex)
@@ -127,22 +149,22 @@ namespace Unity.VersionControl.Git
 
         public void Warning(Exception ex, string format, params object[] objects)
         {
-            Warning(ex, String.Format(format, objects));
+            Warning(ex, string.Format(format, objects));
         }
 
         public void Error(string message)
         {
-            LogHelper.LogAdapter.Error(context, message);
+            logger.Error(context, message);
         }
 
         public void Error(string format, params object[] objects)
         {
-            Error(String.Format(format, objects));
+            Error(string.Format(format, objects));
         }
 
         public void Error(Exception ex, string message)
         {
-            Error(String.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
+            Error(string.Concat(message, Environment.NewLine, ex.GetExceptionMessage()));
         }
 
         public void Error(Exception ex)
@@ -152,7 +174,7 @@ namespace Unity.VersionControl.Git
 
         public void Error(Exception ex, string format, params object[] objects)
         {
-            Error(ex, String.Format(format, objects));
+            Error(ex, string.Format(format, objects));
         }
     }
 }

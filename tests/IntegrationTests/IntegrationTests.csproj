@@ -1,13 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <SolutionDir Condition=" '$(SolutionDir)' == '' ">..\..\</SolutionDir>
-    <ProjectGuid>{1AC3F82E-AEAE-4C84-825C-207BB264FCFA}</ProjectGuid>
+    <RootDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\'))</RootDir>
+    <PackageName>com.unity.git.api</PackageName>
+    <PublishTo>$(RootDir)build\packages\</PublishTo>
+    <PackageSource>src\</PackageSource>
+    <PackageSubFolder>\Helpers~\</PackageSubFolder>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <RootNamespace>IntegrationTests</RootNamespace>
     <AssemblyName>IntegrationTests</AssemblyName>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\common\properties.props" />
-  <Import Project="$(SolutionDir)\common\tests.props" />  
+  <Import Project="$(RootDir)\common\properties.props" />
+  <Import Project="$(RootDir)\common\tests.props" />  
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.7.0" />
     <PackageReference Include="NCrunch.Framework" Version="3.17.0" />
@@ -23,9 +29,32 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\src\$(PackageName)\Tests\Editor\**\*.cs" Link="UnityTests\%(Filename)%(Extension)" Exclude="..\..\src\$(PackageName)\Tests\**\UnityBaseTest.cs" />
+    <None Include="..\..\src\$(PackageName)\Tests\**\UnityBaseTest.cs" Link="UnityTests\UnityBaseTest.cs" />
+    <Compile Include="**\*.cs" Link="NUnitTests\%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="TestResults\**" />
+    <EmbeddedResource Remove="TestResults\**" />
+    <None Remove="TestResults\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="BaseGitEnvironmentTest.cs" />
+    <Compile Remove="BaseIntegrationTest.cs" />
+    <Compile Remove="BaseTest_old.cs" />
+    <Compile Remove="Download\BaseTestWithHttpServer.cs" />
+    <Compile Remove="SetUpFixture.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="BaseGitEnvironmentTest.cs" />
+    <None Include="BaseIntegrationTest.cs" />
+    <None Include="BaseTest_old.cs" />
+    <None Include="Download\BaseTestWithHttpServer.cs" />
     <None Include="IOTestsRepo.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SetUpFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

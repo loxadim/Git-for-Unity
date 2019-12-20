@@ -70,10 +70,8 @@
     <Compile Remove="OutputProcessors\WindowsDiskUsageOutputProcessor.cs" />
     <Compile Remove="Platform\LinuxDiskUsageTask.cs" />
     <Compile Remove="Platform\WindowsDiskUsageTask.cs" />
-    <Compile Remove="Primitives\UriString.cs" />
     <Compile Remove="Process\IProcessEnvironment.cs" />
     <Compile Remove="Process\IProcessManager.cs" />
-    <Compile Remove="Process\ProcessManager.cs" />
     <Compile Remove="Tasks\ActionTask.cs" />
     <Compile Remove="Tasks\BaseOutputProcessor.cs" />
     <Compile Remove="Tasks\ConcurrentExclusiveInterleave.cs" />
@@ -127,10 +125,8 @@
     <None Include="OutputProcessors\WindowsDiskUsageOutputProcessor.cs" />
     <None Include="Platform\LinuxDiskUsageTask.cs" />
     <None Include="Platform\WindowsDiskUsageTask.cs" />
-    <None Include="Primitives\UriString.cs" />
     <None Include="Process\IProcessEnvironment.cs" />
     <None Include="Process\IProcessManager.cs" />
-    <None Include="Process\ProcessManager.cs" />
     <None Include="Tasks\ActionTask.cs" />
     <None Include="Tasks\BaseOutputProcessor.cs" />
     <None Include="Tasks\ConcurrentExclusiveInterleave.cs" />
@@ -163,10 +159,7 @@
     </VersionFiles>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
-    <PackageReference Include="com.unity.editor.tasks" Version="1.2.17" />
-    <PackageReference Include="com.unity.process-server.client" Version="0.1.26-preview" />
-    <PackageReference Include="com.unity.process-server.server" Version="0.1.26-preview" />
-    <PackageReference Include="com.unity.rpc" Version="1.0.11-preview" />
+    <PackageReference Include="com.unity.editor.tasks" Version="1.2.21" />
   </ItemGroup>
 
   <Import Project="$(SolutionDir)\common\packaging.targets" Condition=" '$(TargetFramework)' == 'net471' " />

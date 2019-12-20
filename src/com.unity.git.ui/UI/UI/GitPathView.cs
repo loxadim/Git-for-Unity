@@ -178,7 +178,7 @@ namespace Unity.VersionControl.Git
                         isBusy = true;
                         TaskManager.With(() =>
                             {
-                                var gitInstaller = new GitInstaller(TaskManager, Environment, Manager.ProcessManager, Platform.ProcessEnvironment);
+                                var gitInstaller = new GitInstaller(Platform);
                                 return gitInstaller.FindSystemGit(new GitInstaller.GitInstallationState());
                             }, "Locating git...")
                             .FinallyInUI((success, ex, state) =>
@@ -228,7 +228,7 @@ namespace Unity.VersionControl.Git
             {
                 TaskManager.With(() => {
                         var state = Environment.GitDefaultInstallation.GetDefaults();
-                        var gitInstaller = new GitInstaller(TaskManager, Environment, Manager.ProcessManager, Platform.ProcessEnvironment, state);
+                        var gitInstaller = new GitInstaller(Platform, state);
                         state = gitInstaller.RunSynchronously();
                         if (state.GitIsValid && state.GitLfsIsValid)
                         {
@@ -260,7 +260,7 @@ namespace Unity.VersionControl.Git
                 var newState = new GitInstaller.GitInstallationState();
                 newState.GitExecutablePath = gitPath.ToSPath();
                 newState.GitLfsExecutablePath = gitLfsPath.ToSPath();
-                var installer = new GitInstaller(TaskManager, Environment, Manager.ProcessManager, Platform.ProcessEnvironment, newState);
+                var installer = new GitInstaller(Platform, newState);
                 installer.Progress(UpdateProgress);
 
                 TaskManager.With(() =>

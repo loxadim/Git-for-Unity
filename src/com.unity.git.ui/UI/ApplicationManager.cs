@@ -26,7 +26,7 @@ namespace Unity.VersionControl.Git
             Initialize();
         }
 
-        protected override void InitializeUI()
+        public override void InitializeUI()
         {
             Logger.Trace("Restarted {0}", Environment.Repository != null ? Environment.Repository.LocalPath : "null");
             EnvironmentCache.Instance.Flush();
@@ -107,7 +107,5 @@ namespace Unity.VersionControl.Git
             }
             base.Dispose(disposing);
         }
-
-        public override IProcessEnvironment GitEnvironment { get { return Platform.ProcessEnvironment; } }
     }
 }

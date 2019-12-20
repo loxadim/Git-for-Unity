@@ -58,12 +58,14 @@ namespace Unity.VersionControl.Git
                 assets.FirstOrDefault(x => x.Name.EndsWith(name + ".sha256")));
         }
 
-        public static DugiteReleaseManifest Load(ITaskManager taskManager, SPath path, IGitEnvironment environment)
+        public static DugiteReleaseManifest Load(ITaskManager taskManager, SPath manifestFile,
+            SPath userCachePath,
+            IGitEnvironment environment)
         {
-            var manifest = path.ReadAllText().FromJson<DugiteReleaseManifest>(true, false);
+            var manifest = manifestFile.ReadAllText().FromJson<DugiteReleaseManifest>(true, false);
             var (zipAsset, shaAsset) = manifest.GetAsset(environment);
-            var shaAssetPath = environment.UserCachePath.Combine("downloads", shaAsset.Name);
-                if (!shaAssetPath.FileExists())
+            var shaAssetPath = userCachePath.Combine("downloads", shaAsset.Name);
+            if (!shaAssetPath.FileExists())
             {
                 var downloader = new Downloader(taskManager);
                 downloader.QueueDownload(shaAsset.Url, shaAssetPath.Parent, shaAssetPath.FileName);
@@ -74,7 +76,8 @@ namespace Unity.VersionControl.Git
             return manifest;
         }
 
-        public static DugiteReleaseManifest Load(ITaskManager taskManager, SPath localCacheFile, UriString packageFeed, IGitEnvironment environment,
+        public static DugiteReleaseManifest Load(ITaskManager taskManager, SPath localCacheFile,
+            UriString packageFeed, IGitEnvironment environment,
             bool alwaysDownload = false)
         {
             DugiteReleaseManifest package = null;
@@ -108,7 +111,7 @@ namespace Unity.VersionControl.Git
             {
                 try
                 {
-                    package = Load(taskManager, localCacheFile, environment);
+                    package = Load(taskManager, localCacheFile, cacheDir, environment);
                 }
                 catch (Exception ex)
                 {

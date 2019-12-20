@@ -3,68 +3,62 @@ using Unity.VersionControl.Git;
 
 namespace IntegrationTests
 {
-    class BaseTestWithHttpServer : BaseTest
+    class BaseTestWithHttpServer
     {
         protected virtual int Timeout { get; set; } = 30 * 1000;
         protected TestWebServer.HttpServer server;
 
-        public override void TestFixtureSetUp()
+        public void TestFixtureSetUp()
         {
-            base.TestFixtureSetUp();
             ApplicationConfiguration.WebTimeout = 50000;
             var filesToServePath = SolutionDirectory.Combine("files");
             server = new TestWebServer.HttpServer(filesToServePath, 50000);
             Task.Factory.StartNew(server.Start);
         }
 
-        public override void TestFixtureTearDown()
+        public void TestFixtureTearDown()
         {
-            base.TestFixtureTearDown();
             server.Stop();
             ApplicationConfiguration.WebTimeout = ApplicationConfiguration.DefaultWebTimeout;
         }
     }
 
 
-    class BaseIntegrationTestWithHttpServer : BaseIntegrationTest
+    class BaseIntegrationTestWithHttpServer
     {
         protected virtual int Timeout { get; set; } = 30 * 1000;
         protected TestWebServer.HttpServer server;
 
-        public override void TestFixtureSetUp()
+        public void TestFixtureSetUp()
         {
-            base.TestFixtureSetUp();
             ApplicationConfiguration.WebTimeout = 50000;
             var filesToServePath = SolutionDirectory.Combine("files");
             server = new TestWebServer.HttpServer(filesToServePath, 50000);
             Task.Factory.StartNew(server.Start);
         }
 
-        public override void TestFixtureTearDown()
+        public void TestFixtureTearDown()
         {
-            base.TestFixtureTearDown();
             server.Stop();
             ApplicationConfiguration.WebTimeout = ApplicationConfiguration.DefaultWebTimeout;
         }
     }
 
-    class BaseGitTestWithHttpServer : BaseGitEnvironmentTest
+    class BaseGitTestWithHttpServer
     {
         protected virtual int Timeout { get; set; } = 30 * 1000;
         protected TestWebServer.HttpServer server;
 
-        public override void TestFixtureSetUp()
+        public void TestFixtureSetUp()
         {
-            base.TestFixtureSetUp();
             ApplicationConfiguration.WebTimeout = 50000;
             var filesToServePath = SolutionDirectory.Combine("files");
             server = new TestWebServer.HttpServer(filesToServePath, 50000);
             Task.Factory.StartNew(server.Start);
         }
 
-        public override void TestFixtureTearDown()
+        public void TestFixtureTearDown()
         {
-            base.TestFixtureTearDown();
             server.Stop();
             ApplicationConfiguration.WebTimeout = ApplicationConfiguration.DefaultWebTimeout;
         }

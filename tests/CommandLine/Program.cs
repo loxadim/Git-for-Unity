@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using Mono.Options;
+using SpoiledCat.SimpleIO;
+using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Helpers;
 using Unity.VersionControl.Git;
+using IFileSystem = Unity.VersionControl.Git.IO.IFileSystem;
+using Utils = Unity.VersionControl.Git.Utils;
 
 namespace Tests.CommandLine
 {
@@ -212,6 +218,23 @@ namespace Tests.CommandLine
                 Console.Error.WriteLine(error);
 
             return retCode;
+        }
+    }
+
+    public static class SPathExtensions
+    {
+        public static string CalculateMD5(this SPath file)
+        {
+            byte[] computeHash;
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = file.OpenRead())
+                {
+                    computeHash = md5.ComputeHash(stream);
+                }
+            }
+
+            return BitConverter.ToString(computeHash).Replace("-", string.Empty).ToLower();
         }
     }
 }

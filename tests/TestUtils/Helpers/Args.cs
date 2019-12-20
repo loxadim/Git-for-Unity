@@ -3,6 +3,8 @@ using System.Threading;
 using Unity.VersionControl.Git;
 using NSubstitute;
 using System.Collections.Generic;
+using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Helpers;
 
 namespace TestUtils
 {

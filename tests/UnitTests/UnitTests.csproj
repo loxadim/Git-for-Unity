@@ -7,7 +7,13 @@
     <AssemblyName>UnitTests</AssemblyName>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\common\properties.props" />
-  <Import Project="$(SolutionDir)\common\tests.props" />  
+  <Import Project="$(SolutionDir)\common\tests.props" />
+  <ItemGroup>
+    <Compile Remove="Authentication\KeychainTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Authentication\KeychainTests.cs" />
+  </ItemGroup>  
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.7.0" />
     <PackageReference Include="NCrunch.Framework" Version="3.17.0" />

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Editor.Tasks;
+using Unity.VersionControl.Git.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -265,10 +266,12 @@ namespace Unity.VersionControl.Git
                 var rightFolder = tmpDir.Combine("right", rightFile.FileName);
                 foreach (var file in files)
                 {
-                    var txt = new NativeProcessTask(TaskManager, Platform.ProcessEnvironment, Environment.GitExecutablePath,
-                            "show HEAD:\"" + file.ToString(SlashMode.Forward) + "\"").Configure(Manager.ProcessManager)
-                                                                                     .Catch(_ => true)
-                                                                                     .RunSynchronously();
+                    var txt = new GitProcessTask(Platform,
+                            "show HEAD:\"" + file.ToString(SlashMode.Forward) + "\"")
+                              .Configure(Manager.ProcessManager)
+                              .Catch(_ => true)
+                              .RunSynchronously();
+
                     if (txt != null)
                         leftFolder.Combine(file.RelativeTo(rightFile))
                                   .WriteAllText(txt);
@@ -285,8 +288,7 @@ namespace Unity.VersionControl.Git
             var rightFile = node.Path.ToSPath();
             var tmpDir = Manager.Environment.UnityProjectPath.ToSPath().Combine("Temp", "ghu-diffs").EnsureDirectoryExists();
             var leftFile = tmpDir.Combine(rightFile.FileName + "_" + Repository.CurrentHead + rightFile.ExtensionWithDot);
-            return new NativeProcessTask(TaskManager, Platform.ProcessEnvironment, Environment.GitExecutablePath,
-                       "show HEAD:\"" + rightFile.ToString(SlashMode.Forward) + "\"")
+            return new GitProcessTask(Platform, "show HEAD:\"" + rightFile.ToString(SlashMode.Forward) + "\"")
                    .Configure(Manager.ProcessManager)
                    .Catch(_ => true)
                    .Then((success, ex, txt) =>

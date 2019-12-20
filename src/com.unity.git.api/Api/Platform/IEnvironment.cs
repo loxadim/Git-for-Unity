@@ -3,12 +3,18 @@ using System;
 namespace Unity.VersionControl.Git
 {
     using IO;
+    public enum Folders
+    {
+        LocalApplicationData,
+        CommonApplicationData,
+        Logs
+    }
 
     public interface IGitEnvironment : Unity.Editor.Tasks.IEnvironment
     {
-        void Initialize(SPath extensionInstallPath);
+        IGitEnvironment Initialize(SPath extensionInstallPath, string projectPath, string unityVersion = null, string EditorApplication_applicationPath = null, string EditorApplication_applicationContentsPath = null);
         void InitializeRepository(SPath? expectedRepositoryPath = null);
-        string GetSpecialFolder(Environment.SpecialFolder folder);
+        SPath GetFolder(Folders folder);
 
         GitInstaller.GitInstallationState GitInstallationState { get; set; }
         GitInstaller.GitInstallDetails GitDefaultInstallation { get; set; }

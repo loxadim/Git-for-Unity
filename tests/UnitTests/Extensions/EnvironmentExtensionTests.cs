@@ -6,6 +6,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using TestUtils;
+using Unity.VersionControl.Git.IO;
 
 namespace UnitTests
 {
@@ -34,7 +35,7 @@ namespace UnitTests
             [Values(@"test.txt", "test.txt", "test.txt")]string path,
             [Values(@"test.txt", "UnityProject/test.txt", "test.txt")]string expected)
         {
-            var environment = Substitute.For<IEnvironment>();
+            var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
             environment.UnityProjectPath.Returns(projectPath.ToSPath());
 
@@ -49,7 +50,7 @@ namespace UnitTests
             [Values(@"c:\UnityProject\UnityProject")]string projectPath,
             [Values(@"test.txt")]string path)
         {
-            var environment = Substitute.For<IEnvironment>();
+            var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
             environment.UnityProjectPath.Returns(projectPath.ToSPath());
 
@@ -64,7 +65,7 @@ namespace UnitTests
             [Values(@"UnityProject\test.txt", "Unity/UnityProject/Assets/test.txt", "test.txt")] string path,
             [Values("test.txt", "Assets/test.txt", "test.txt")] string expected)
         {
-            var environment = Substitute.For<IEnvironment>();
+            var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
             environment.UnityProjectPath.Returns(projectPath.ToSPath());
 
@@ -79,7 +80,7 @@ namespace UnitTests
             [Values(@"c:\Projects\UnityProject")] string projectPath,
             [Values("test.txt")] string path)
         {
-            var environment = Substitute.For<IEnvironment>();
+            var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
             environment.UnityProjectPath.Returns(projectPath.ToSPath());
 

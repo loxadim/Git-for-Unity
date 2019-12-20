@@ -14,30 +14,22 @@ namespace Unity.VersionControl.Git
         protected static ILogging Logger { get; } = LogHelper.GetLogger<IApplicationManager>();
 
         private RepositoryManager repositoryManager;
-        private ProgressReporter progressReporter = new ProgressReporter();
-        private Progress progress = new Progress(TaskBase.Default);
+        private readonly ProgressReporter progressReporter = new ProgressReporter();
+        private readonly Progress progress = new Progress(TaskBase.Default);
         protected bool isBusy;
-        private bool firstRun;
-        protected bool FirstRun { get { return firstRun; } set { firstRun = value; } }
-        private Guid instanceId;
-        protected Guid InstanceId { get { return instanceId; } set { instanceId = value; } }
 
         public event Action<IProgress> OnProgress
         {
-            add { progressReporter.OnProgress += value; }
-            remove { progressReporter.OnProgress -= value; }
+            add => progressReporter.OnProgress += value;
+            remove => progressReporter.OnProgress -= value;
         }
 
         public ApplicationManagerBase(SynchronizationContext synchronizationContext, IGitEnvironment environment)
         {
-            Environment = environment;
-            TaskManager = new TaskManager().Initialize(synchronizationContext);
-            ProcessManager = new ProcessManager(Environment);
-            Platform = new Platform(TaskManager, Environment, ProcessManager);
-            GitClient = new GitClient(Platform);
+            Platform = new Platform(synchronizationContext, environment);
         }
 
-        protected void Initialize()
+        public void Initialize()
         {
             LogHelper.TracingEnabled = UserSettings.Get(Constants.TraceLoggingKey, false);
             ApplicationConfiguration.WebTimeout = UserSettings.Get(Constants.WebTimeoutKey, ApplicationConfiguration.WebTimeout);
@@ -51,8 +43,9 @@ namespace Unity.VersionControl.Git
             isBusy = true;
             progress.UpdateProgress(0, 100, "Initializing...");
 
-            var thread = new Thread(() => {
-                GitInstallationState state = new GitInstallationState();
+            TaskManager.With(() =>
+            {
+                var state = new GitInstallationState();
                 try
                 {
                     if (Environment.IsMac)
@@ -74,7 +67,7 @@ namespace Unity.VersionControl.Git
                     if (!state.GitIsValid && !state.GitLfsIsValid && FirstRun)
                     {
                         // importing old settings
-                        SPath gitExecutablePath = Environment.SystemSettings.Get(Constants.GitInstallPathKey, SPath.Default);
+                        var gitExecutablePath = Environment.SystemSettings.Get(Constants.GitInstallPathKey, SPath.Default);
                         if (gitExecutablePath.IsInitialized)
                         {
                             Environment.SystemSettings.Unset(Constants.GitInstallPathKey);
@@ -84,11 +77,11 @@ namespace Unity.VersionControl.Git
                         }
                     }
 
-                    var installer = new GitInstaller(TaskManager, Environment, ProcessManager, Platform.ProcessEnvironment);
+                    var installer = new GitInstaller(Platform);
                     installer.Progress(progressReporter.UpdateProgress);
                     if (state.GitIsValid && state.GitLfsIsValid)
                     {
-                        if (firstRun)
+                        if (FirstRun)
                         {
                             installer.ValidateGitVersion(state);
                             if (state.GitIsValid)
@@ -120,16 +113,18 @@ namespace Unity.VersionControl.Git
                     progress.UpdateProgress(90, 100, "Initialization failed");
                 }
 
-                TaskManager.WithUI(gitIsValid => {
-                               InitializationComplete();
-                               if (gitIsValid)
-                               {
-                                   InitializeUI();
-                               }
-                           }, state.GitIsValid && state.GitLfsIsValid)
-                           .Start();
-            });
-            thread.Start();
+                return state.GitIsValid && state.GitLfsIsValid;
+            }, TaskAffinity.None)
+
+                       .ThenInUI(gitIsValid =>
+                       {
+                           InitializationComplete();
+                           if (gitIsValid)
+                           {
+                               InitializeUI();
+                           }
+                       })
+                       .Start();
         }
 
         public void SetupGit(GitInstaller.GitInstallationState state)
@@ -158,42 +153,40 @@ namespace Unity.VersionControl.Git
             Environment.GitInstallationState = state;
             Environment.User.Initialize(GitClient);
 
-            if (firstRun)
+            if (!FirstRun) return;
+
+            if (Environment.RepositoryPath.IsInitialized)
             {
-                if (Environment.RepositoryPath.IsInitialized)
-                {
-                    UpdateMergeSettings();
+                UpdateMergeSettings();
 
-                    GitClient.LfsInstall()
-                        .Catch(e =>
-                        {
-                            Logger.Error(e, "Error running lfs install");
-                            return true;
-                        })
-                        .RunSynchronously();
-                }
+                GitClient.LfsInstall()
+                         .Catch(e =>
+                         {
+                             Logger.Error(e, "Error running lfs install");
+                             return true;
+                         })
+                         .RunSynchronously();
+            }
 
-                if (Environment.IsWindows)
-                {
-                    var credentialHelper = GitClient.GetConfig("credential.helper", GitConfigSource.Global)
-                        .Catch(e =>
-                        {
-                            Logger.Error(e, "Error getting the credential helper");
-                            return true;
-                        }).RunSynchronously();
+            if (!Environment.IsWindows) return;
 
-                    if (string.IsNullOrEmpty(credentialHelper))
-                    {
-                        Logger.Warning("No Windows CredentialHelper found: Setting to wincred");
-                        GitClient.SetConfig("credential.helper", "wincred", GitConfigSource.Global)
-                            .Catch(e =>
-                            {
-                                Logger.Error(e, "Error setting the credential helper");
-                                return true;
-                            })
-                            .RunSynchronously();
-                    }
-                }
+            var credentialHelper = GitClient.GetConfig("credential.helper", GitConfigSource.Global)
+                                            .Catch(e =>
+                                            {
+                                                Logger.Error(e, "Error getting the credential helper");
+                                                return true;
+                                            }).RunSynchronously();
+
+            if (string.IsNullOrEmpty(credentialHelper))
+            {
+                Logger.Warning("No Windows CredentialHelper found: Setting to wincred");
+                GitClient.SetConfig("credential.helper", "wincred", GitConfigSource.Global)
+                         .Catch(e =>
+                         {
+                             Logger.Error(e, "Error setting the credential helper");
+                             return true;
+                         })
+                         .RunSynchronously();
             }
         }
 
@@ -201,7 +194,8 @@ namespace Unity.VersionControl.Git
         {
             isBusy = true;
             progress.UpdateProgress(0, 100, "Initializing...");
-            var thread = new Thread(() =>
+
+            TaskManager.With(() =>
             {
                 var success = true;
                 try
@@ -228,8 +222,10 @@ namespace Unity.VersionControl.Git
                     assetsGitignore.CreateFile();
                     GitClient.Add(filesForInitialCommit).RunSynchronously();
                     progress.UpdateProgress(60, 100, "Initializing...");
+
                     GitClient.Commit("Initial commit", null).RunSynchronously();
                     progress.UpdateProgress(70, 100, "Initializing...");
+
                     Environment.InitializeRepository();
                 }
                 catch (Exception ex)
@@ -239,16 +235,20 @@ namespace Unity.VersionControl.Git
                     success = false;
                 }
 
-                if (success)
-                {
-                    progress.UpdateProgress(90, 100, "Initializing...");
-                    RestartRepository();
-                    TaskManager.RunInUI(InitializeUI);
-                    progress.UpdateProgress(100, 100, "Initialized");
-                }
-                isBusy = false;
-            });
-            thread.Start();
+                return success;
+            }, TaskAffinity.None)
+                       .ThenInUI(success =>
+                       {
+                           if (success)
+                           {
+                               progress.UpdateProgress(90, 100, "Initializing...");
+                               RestartRepository();
+                               TaskManager.RunInUI(InitializeUI);
+                               progress.UpdateProgress(100, 100, "Initialized");
+                           }
+                           isBusy = false;
+                       })
+                .Start();
         }
 
         private void ConfigureMergeSettings(string keyName = null)
@@ -315,10 +315,10 @@ namespace Unity.VersionControl.Git
             Environment.Repository.Initialize(repositoryManager, TaskManager);
             repositoryManager.Start();
             Environment.Repository.Start();
-            Logger.Trace($"Got a repository? {(Environment.Repository != null ? Environment.Repository.LocalPath : "null")}");
+            Logger.Trace($"Got a repository? {Environment.Repository?.LocalPath ?? "null"}");
         }
 
-        protected virtual void InitializeUI() {}
+        public virtual void InitializeUI() {}
         protected virtual void InitializationComplete() {}
 
         private bool disposed = false;
@@ -329,15 +329,10 @@ namespace Unity.VersionControl.Git
             {
                 if (disposed) return;
                 disposed = true;
-                if (ProcessManager != null)
-                {
-                    ProcessManager.Stop();
-                }
-                if (TaskManager != null)
-                {
-                    TaskManager.Dispose();
-                    TaskManager = null;
-                }
+
+                if (Platform is IDisposable platform)
+                    platform.Dispose();
+
                 if (repositoryManager != null)
                 {
                     repositoryManager.Dispose();
@@ -351,17 +346,18 @@ namespace Unity.VersionControl.Git
             Dispose(true);
         }
 
-        public IGitEnvironment Environment { get; private set; }
         public IPlatform Platform { get; protected set; }
-        public virtual IProcessEnvironment GitEnvironment { get; set; }
-        public IProcessManager ProcessManager { get; protected set; }
-        public ITaskManager TaskManager { get; private set; }
-        public IGitClient GitClient { get; protected set; }
-        public ISettings LocalSettings { get { return Environment.LocalSettings; } }
-        public ISettings SystemSettings { get { return Environment.SystemSettings; } }
-        public ISettings UserSettings { get { return Environment.UserSettings; } }
-        public bool IsBusy { get { return isBusy; } }
-        protected TaskScheduler UIScheduler { get; private set; }
-        protected IRepositoryManager RepositoryManager { get { return repositoryManager; } }
+        public IGitEnvironment Environment => Platform.Environment;
+        public IProcessEnvironment GitEnvironment => ProcessManager.GitProcessEnvironment;
+        public IGitProcessManager ProcessManager => Platform.ProcessManager;
+        public ITaskManager TaskManager => Platform.TaskManager;
+        public IGitClient GitClient => Platform.GitClient;
+        public ISettings LocalSettings => Environment.LocalSettings;
+        public ISettings SystemSettings => Environment.SystemSettings;
+        public ISettings UserSettings => Environment.UserSettings;
+        public bool IsBusy => isBusy;
+        protected IRepositoryManager RepositoryManager => repositoryManager;
+        protected bool FirstRun { get; set; }
+        protected Guid InstanceId { get; set; }
     }
 }

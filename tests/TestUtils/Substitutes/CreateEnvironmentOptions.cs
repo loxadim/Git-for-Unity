@@ -1,4 +1,5 @@
 using Unity.VersionControl.Git;
+using Unity.VersionControl.Git.IO;
 
 namespace TestUtils
 {

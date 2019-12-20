@@ -5,7 +5,9 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using NCrunch.Framework;
 using NUnit.Framework;
+using Unity.Editor.Tasks;
 using Unity.VersionControl.Git;
+using Unity.VersionControl.Git.IO;
 
 namespace IntegrationTests
 {
@@ -18,9 +20,9 @@ namespace IntegrationTests
         protected ITaskManager TaskManager { get; set; }
         protected IPlatform Platform { get; set; }
         protected IProcessManager ProcessManager { get; set; }
-        protected IProcessEnvironment GitEnvironment => Platform.GitEnvironment;
+        protected IProcessEnvironment ProcessEnvironment => Platform.ProcessEnvironment;
         protected IGitClient GitClient { get; set; }
-        public IEnvironment Environment { get; set; }
+        public IntegrationTestEnvironment Environment { get; set; }
 
         protected SPath DotGitConfig { get; set; }
         protected SPath DotGitHead { get; set; }
@@ -58,10 +60,10 @@ namespace IntegrationTests
         {
             InitializeTaskManager();
 
-            Platform = new Platform(Environment);
-            ProcessManager = new ProcessManager(Environment, GitEnvironment, TaskManager.Token);
+            ProcessManager = new ProcessManager(Environment);
+            Platform = new Platform(TaskManager, Environment, ProcessManager);
 
-            Platform.Initialize(ProcessManager, TaskManager);
+            Platform.Initialize();
         }
 
         protected override ITaskManager InitializeTaskManager()
@@ -71,7 +73,7 @@ namespace IntegrationTests
             return TaskManager;
         }
 
-        protected IEnvironment InitializePlatformAndEnvironment(SPath repoPath,
+        protected IGitEnvironment InitializePlatformAndEnvironment(SPath repoPath,
             bool enableEnvironmentTrace = false,
             Action<IRepositoryManager> onRepositoryManagerCreated = null,
             [CallerMemberName] string testName = "")

@@ -803,7 +803,18 @@ namespace Unity.VersionControl.Git.IO
 			}
 		}
 
-		public static SPath GetTempFilename(string myprefix = "")
+        public static SPath CreateTempDirectory(SPath basePath, string myprefix)
+        {
+            var random = new Random();
+            while (true)
+            {
+                var candidate = new SPath(basePath + "/" + myprefix + "_" + random.Next());
+                if (!candidate.Exists())
+                    return candidate.CreateDirectory();
+            }
+        }
+
+        public static SPath GetTempFilename(string myprefix = "")
 		{
 			var random = new Random();
 			var prefix = FileSystem.TempPath + "/" + (String.IsNullOrEmpty(myprefix) ? "" : myprefix + "_");

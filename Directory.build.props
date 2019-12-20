@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <LangVersion>7.3</LangVersion>
 
     <RepoRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))</RepoRoot>
     <RepoBinPath>$(RepoRoot)build\$(Configuration)</RepoBinPath>

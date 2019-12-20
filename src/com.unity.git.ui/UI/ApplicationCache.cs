@@ -156,7 +156,7 @@ namespace Unity.VersionControl.Git
                     cacheContainer.SetCacheInitializer(CacheType.GitUser, () => GitUserCache.Instance);
                     cacheContainer.SetCacheInitializer(CacheType.RepositoryInfo, () => RepositoryInfoCache.Instance);
 
-                    environment = new DefaultEnvironment(cacheContainer);
+                    environment = new ApplicationEnvironment(cacheContainer);
 
                     if (projectPath == null)
                     {
@@ -167,8 +167,7 @@ namespace Unity.VersionControl.Git
                         extensionInstallPath = DetermineInstallationPath();
                     }
 
-                    environment.Initialize(projectPath, unityVersion, unityApplication, unityApplicationContents);
-                    environment.Initialize(extensionInstallPath);
+                    environment.Initialize(extensionInstallPath.ToSPath(), projectPath, unityVersion, unityApplication, unityApplicationContents);
                     SPath? path = null;
                     if (!String.IsNullOrEmpty(repositoryPath))
                         path = repositoryPath.ToSPath();
