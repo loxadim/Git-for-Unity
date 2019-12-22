@@ -55,7 +55,7 @@ namespace Unity.VersionControl.Git
                 selectedObject = AssetDatabase.LoadMainAssetAtPath(selectedObjectAssetPath);
 
                 selectedObjectRepositoryPath =
-                    Environment.GetRepositoryPath(assetPath.ToSPath())
+                    Environment.RelativeToRepository(assetPath.ToSPath())
                                .ToString(SlashMode.Forward);
             }
 

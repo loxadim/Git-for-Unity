@@ -54,8 +54,6 @@ namespace Unity.VersionControl.Git
 
         public void InitializeRepository(SPath? repositoryPath = null)
         {
-            Guard.NotNull(this, FileSystem, nameof(FileSystem));
-
             SPath expectedRepositoryPath;
             if (!RepositoryPath.IsInitialized || (repositoryPath != null && RepositoryPath != repositoryPath.Value))
             {
@@ -75,9 +73,9 @@ namespace Unity.VersionControl.Git
                 expectedRepositoryPath = RepositoryPath;
             }
 
-            //FileSystem.SetCurrentDirectory(expectedRepositoryPath);
             if (expectedRepositoryPath.Exists(".git"))
             {
+                SPath.FileSystem = new FileSystem(expectedRepositoryPath);
                 RepositoryPath = expectedRepositoryPath;
                 Repository = new Repository(RepositoryPath, CacheContainer);
             }
@@ -114,7 +112,6 @@ namespace Unity.VersionControl.Git
         }
 
         public SPath LogPath { get; }
-        public IFileSystem FileSystem { get { return SPath.FileSystem; } set { SPath.FileSystem = value; } }
         public SPath ExtensionInstallPath { get; set; }
         public SPath UserCachePath { get; set; }
         public SPath SystemCachePath { get; set; }

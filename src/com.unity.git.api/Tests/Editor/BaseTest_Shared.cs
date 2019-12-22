@@ -84,8 +84,9 @@ namespace BaseTests
 			Logger = logger;
 			Watch = new Stopwatch();
             SourceDirectory = TestContext.CurrentContext.TestDirectory.ToSPath();
-            TestPath = SPath.CreateTempDirectory(SourceDirectory.Combine("temp").EnsureDirectoryExists(), testName);
-            
+            TestPath = SPath.CreateTempDirectory(testName);
+            SPath.FileSystem = new FileSystem(TestPath);
+
             var cacheContainer = new CacheContainer();
             cacheContainer.SetCacheInitializer(CacheType.Branches, () => BranchesCache.Instance);
             cacheContainer.SetCacheInitializer(CacheType.GitAheadBehind, () => GitAheadBehindCache.Instance);

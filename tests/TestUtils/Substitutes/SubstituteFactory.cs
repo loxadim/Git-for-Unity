@@ -42,23 +42,6 @@ namespace TestUtils
             fileSystem.DirectorySeparatorChar.Returns(realFileSystem.DirectorySeparatorChar);
             //fileSystem.GetCurrentDirectory().Returns(createFileSystemOptions.CurrentDirectory);
 
-            fileSystem.Combine(Args.String, Args.String).Returns(info => {
-                var path1 = (string)info[0];
-                var path2 = (string)info[1];
-                var combine = realFileSystem.Combine(path1, path2);
-                logger.Trace(@"Combine(""{0}"", ""{1}"") -> ""{2}""", path1, path2, combine);
-                return combine;
-            });
-
-            fileSystem.Combine(Args.String, Args.String, Args.String).Returns(info => {
-                var path1 = (string)info[0];
-                var path2 = (string)info[1];
-                var path3 = (string)info[2];
-                var combine = realFileSystem.Combine(path1, path2, path3);
-                logger.Trace(@"Combine(""{0}"", ""{1}"", ""{2}"") -> ""{3}""", path1, path2, path3, combine);
-                return combine;
-            });
-
             fileSystem.FileExists(Args.String).Returns(info => {
                 var path = (string)info[0];
 

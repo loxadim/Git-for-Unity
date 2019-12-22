@@ -332,7 +332,7 @@ namespace Unity.VersionControl.Git
 
         protected void BuildTreeChanges()
         {
-            TreeChanges.PathSeparator = Environment.FileSystem.DirectorySeparatorChar.ToString();
+            TreeChanges.PathSeparator = SPath.FileSystem.DirectorySeparatorChar.ToString();
             TreeChanges.Load(SelectedEntry.changes.Select(entry => new GitStatusEntryTreeData(entry)));
             Redraw();
         }

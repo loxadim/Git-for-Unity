@@ -198,53 +198,49 @@ namespace Unity.VersionControl.Git
             TaskManager.With(() =>
             {
                 var success = true;
-                try
-                {
-                    var targetPath = SPath.CurrentDirectory;
+                var targetPath = Environment.UnityProjectPath.ToSPath();
 
-                    var gitignore = targetPath.Combine(".gitignore");
-                    var gitAttrs = targetPath.Combine(".gitattributes");
-                    var assetsGitignore = targetPath.Combine("Assets", ".gitignore");
+                var gitignore = targetPath.Combine(".gitignore");
+                var gitAttrs = targetPath.Combine(".gitattributes");
+                var assetsGitignore = targetPath.Combine("Assets", ".gitignore");
 
-                    var filesForInitialCommit = new List<string> { gitignore, gitAttrs, assetsGitignore };
+                var filesForInitialCommit = new List<string> { gitignore, gitAttrs, assetsGitignore };
 
-                    GitClient.Init().RunSynchronously();
-                    progress.UpdateProgress(10, 100, "Initializing...");
+                GitClient.Init().RunSynchronously();
+                progress.UpdateProgress(10, 100, "Initializing...");
 
-                    ConfigureMergeSettings();
-                    progress.UpdateProgress(20, 100, "Initializing...");
+                ConfigureMergeSettings();
+                progress.UpdateProgress(20, 100, "Initializing...");
 
-                    GitClient.LfsInstall().RunSynchronously();
-                    progress.UpdateProgress(30, 100, "Initializing...");
+                GitClient.LfsInstall().RunSynchronously();
+                progress.UpdateProgress(30, 100, "Initializing...");
 
-                    AssemblyResources.ToFile(ResourceType.Generic, ".gitignore", targetPath, Environment);
-                    AssemblyResources.ToFile(ResourceType.Generic, ".gitattributes", targetPath, Environment);
-                    assetsGitignore.CreateFile();
-                    GitClient.Add(filesForInitialCommit).RunSynchronously();
-                    progress.UpdateProgress(60, 100, "Initializing...");
+                AssemblyResources.ToFile(ResourceType.Generic, ".gitignore", targetPath, Environment);
+                AssemblyResources.ToFile(ResourceType.Generic, ".gitattributes", targetPath, Environment);
+                assetsGitignore.CreateFile();
+                GitClient.Add(filesForInitialCommit).RunSynchronously();
+                progress.UpdateProgress(60, 100, "Initializing...");
 
-                    GitClient.Commit("Initial commit", null).RunSynchronously();
-                    progress.UpdateProgress(70, 100, "Initializing...");
+                GitClient.Commit("Initial commit", null).RunSynchronously();
+                progress.UpdateProgress(70, 100, "Initializing...");
 
-                    Environment.InitializeRepository();
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "A problem ocurred initializing the repository");
-                    progress.UpdateProgress(90, 100, "Failed to initialize repository");
-                    success = false;
-                }
+                Environment.InitializeRepository();
 
-                return success;
+                progress.UpdateProgress(90, 100, "Initializing...");
+                RestartRepository();
+
             }, TaskAffinity.None)
-                       .ThenInUI(success =>
+                       .FinallyInUI((success, ex) =>
                        {
                            if (success)
                            {
-                               progress.UpdateProgress(90, 100, "Initializing...");
-                               RestartRepository();
-                               TaskManager.RunInUI(InitializeUI);
+                               InitializeUI();
                                progress.UpdateProgress(100, 100, "Initialized");
+                           }
+                           else
+                           {
+                               Logger.Error(ex, "A problem ocurred initializing the repository");
+                               progress.UpdateProgress(100, 100, "Failed to initialize repository");
                            }
                            isBusy = false;
                        })

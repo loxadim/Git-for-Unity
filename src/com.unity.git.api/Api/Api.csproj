@@ -159,7 +159,7 @@
     </VersionFiles>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
-    <PackageReference Include="com.unity.editor.tasks" Version="1.2.21" />
+    <PackageReference Include="com.unity.editor.tasks" Version="1.2.22" />
   </ItemGroup>
 
   <Import Project="$(SolutionDir)\common\packaging.targets" Condition=" '$(TargetFramework)' == 'net471' " />

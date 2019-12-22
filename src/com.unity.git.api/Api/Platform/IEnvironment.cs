@@ -30,7 +30,6 @@ namespace Unity.VersionControl.Git
         SPath LocalAppData { get; }
         SPath CommonAppData { get; }
         SPath LogPath { get; }
-        IFileSystem FileSystem { get; set; }
         IUser User { get; set; }
         IRepository Repository { get; set; }
         ICacheContainer CacheContainer { get; }

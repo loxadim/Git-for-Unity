@@ -10,7 +10,7 @@ namespace Unity.VersionControl.Git
 
     public static class EnvironmentExtensions
     {
-        public static SPath GetRepositoryPath(this IGitEnvironment environment, SPath path)
+        public static SPath RelativeToRepository(this IGitEnvironment environment, SPath path)
         {
             Guard.ArgumentNotNull(path, nameof(path));
 

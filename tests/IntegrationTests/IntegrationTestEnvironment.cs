@@ -74,8 +74,6 @@ namespace IntegrationTests
 
         public void InitializeRepository(SPath? repositoryPath = null)
         {
-            Guard.NotNull(this, FileSystem, nameof(FileSystem));
-
             SPath expectedRepositoryPath;
             if (!RepositoryPath.IsInitialized || (repositoryPath != null && RepositoryPath != repositoryPath.Value))
             {
@@ -95,16 +93,15 @@ namespace IntegrationTests
                 expectedRepositoryPath = RepositoryPath;
             }
 
-            //FileSystem.SetCurrentDirectory(expectedRepositoryPath);
             if (expectedRepositoryPath.Exists(".git"))
             {
+                SPath.FileSystem = new FileSystem(expectedRepositoryPath);
                 RepositoryPath = expectedRepositoryPath;
                 Repository = new Repository(RepositoryPath, CacheContainer);
             }
         }
 
         public SPath LogPath { get; }
-        public IFileSystem FileSystem { get { return SPath.FileSystem; } set { SPath.FileSystem = value; } }
         public SPath ExtensionInstallPath { get; set; }
         public SPath UserCachePath { get; set; }
         public SPath SystemCachePath { get; set; }

@@ -14,9 +14,11 @@ if [[ -e "/c/" ]]; then
 	OS="Windows"
 fi
 
+common/nuget restore
+
 if [[ x"$OS" == x"Windows" ]]; then
 	./build.cmd $Configuration $Target
 else
-	dotnet restore
+	dotnet restore --ignore-failed-sources
 	dotnet build -c $Configuration
 fi

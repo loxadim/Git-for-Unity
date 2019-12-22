@@ -416,7 +416,7 @@ namespace Unity.VersionControl.Git
 
         private void BuildTree()
         {
-            treeChanges.PathSeparator = Environment.FileSystem.DirectorySeparatorChar.ToString();
+            treeChanges.PathSeparator = SPath.FileSystem.DirectorySeparatorChar.ToString();
             treeChanges.Load(gitStatusEntries.Select(entry => new GitStatusEntryTreeData(entry, gitLocks.Contains(entry.Path.ToSPath()))));
             Redraw();
         }
