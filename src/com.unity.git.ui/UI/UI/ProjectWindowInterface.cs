@@ -211,7 +211,7 @@ namespace Unity.VersionControl.Git
                 return false;
 
             SPath assetPath = AssetDatabase.GetAssetPath(selected.GetInstanceID()).ToSPath();
-            SPath repositoryPath = manager.Environment.RelativeToRepository(assetPath);
+            SPath repositoryPath = assetPath.RelativeToRepository(manager.Environment);
 
             var alreadyLocked = locks.Any(x => repositoryPath == x.Path);
             if (alreadyLocked)
@@ -236,7 +236,7 @@ namespace Unity.VersionControl.Git
                 return false;
 
             SPath assetPath = AssetDatabase.GetAssetPath(selected.GetInstanceID()).ToSPath();
-            SPath repositoryPath = manager.Environment.RelativeToRepository(assetPath);
+            SPath repositoryPath = assetPath.RelativeToRepository(manager.Environment);
 
             return locks.Any(x => repositoryPath == x.Path && (!isLockedByCurrentUser || x.Owner.Name == currentUsername));
         }
@@ -244,7 +244,7 @@ namespace Unity.VersionControl.Git
         private static ITask CreateUnlockObjectTask(Object selected, bool force)
         {
             SPath assetPath = AssetDatabase.GetAssetPath(selected.GetInstanceID()).ToSPath();
-            SPath repositoryPath = manager.Environment.RelativeToRepository(assetPath);
+            SPath repositoryPath = assetPath.RelativeToRepository(manager.Environment);
 
             var task = Repository.ReleaseLock(repositoryPath, force);
             //task.OnEnd += (_, s, __) => { if (s) manager.TaskManager.Run(manager.UsageTracker.IncrementUnityProjectViewContextLfsUnlock, null); };
@@ -254,7 +254,7 @@ namespace Unity.VersionControl.Git
         private static ITask CreateLockObjectTask(Object selected)
         {
             SPath assetPath = AssetDatabase.GetAssetPath(selected.GetInstanceID()).ToSPath();
-            SPath repositoryPath = manager.Environment.RelativeToRepository(assetPath);
+            SPath repositoryPath = assetPath.RelativeToRepository(manager.Environment);
 
             var task = Repository.RequestLock(repositoryPath);
             //task.OnEnd += (_, s, ___) => { if (s) manager.TaskManager.Run(manager.UsageTracker.IncrementUnityProjectViewContextLfsLock, null); };
@@ -267,7 +267,7 @@ namespace Unity.VersionControl.Git
             foreach (var lck in locks)
             {
                 SPath repositoryPath = lck.Path;
-                SPath assetPath = manager.Environment.GetAssetPath(repositoryPath);
+                SPath assetPath = repositoryPath.RelativeToProject(manager.Environment);
 
                 var g = AssetDatabase.AssetPathToGUID(assetPath);
                 guidsLocks.Add(g);

@@ -54,9 +54,7 @@ namespace Unity.VersionControl.Git
                 selectedObjectAssetPath = assetPath;
                 selectedObject = AssetDatabase.LoadMainAssetAtPath(selectedObjectAssetPath);
 
-                selectedObjectRepositoryPath =
-                    Environment.RelativeToRepository(assetPath.ToSPath())
-                               .ToString(SlashMode.Forward);
+                selectedObjectRepositoryPath = assetPath.ToSPath().RelativeToRepository(Environment).ToString(SlashMode.Forward);
             }
 
             LoadSelectedIcon();

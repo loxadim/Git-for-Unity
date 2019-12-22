@@ -40,7 +40,7 @@ namespace UnitTests
             environment.UnityProjectPath.Returns(projectPath.ToSPath());
 
             SPath nExpected = expected.ToSPath();
-            var repositoryFilePath = environment.GetRepositoryPath(path.ToSPath());
+            var repositoryFilePath = path.ToSPath().RelativeToRepository(environment);
             repositoryFilePath.Should().Be(nExpected);
         }
 
@@ -54,7 +54,7 @@ namespace UnitTests
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
             environment.UnityProjectPath.Returns(projectPath.ToSPath());
 
-            Action act = () => environment.GetRepositoryPath(path.ToSPath());
+            Action act = () => path.ToSPath().RelativeToRepository(environment);
             act.Should().Throw<InvalidOperationException>();
         }
 
@@ -70,7 +70,7 @@ namespace UnitTests
             environment.UnityProjectPath.Returns(projectPath.ToSPath());
 
             SPath nExpected = expected.ToSPath();
-            var repositoryFilePath = environment.GetAssetPath(path.ToSPath());
+            var repositoryFilePath = path.ToSPath().RelativeToProject(environment);
             repositoryFilePath.Should().Be(nExpected);
         }
 
@@ -84,7 +84,7 @@ namespace UnitTests
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
             environment.UnityProjectPath.Returns(projectPath.ToSPath());
 
-            Action act = () => environment.GetAssetPath(path.ToSPath());
+            Action act = () => path.ToSPath().RelativeToProject(environment);
             act.Should().Throw<InvalidOperationException>();
         }
     }

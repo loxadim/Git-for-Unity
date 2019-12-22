@@ -99,7 +99,7 @@ namespace Unity.VersionControl.Git
                 return null;
 
             GitLock lck;
-            var repositoryPath = environment.RelativeToRepository(assetPath.ToSPath());
+            var repositoryPath = assetPath.ToSPath().RelativeToRepository(environment);
             if (locks.TryGetValue(repositoryPath, out lck))
                 return lck;
             return null;

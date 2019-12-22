@@ -1000,10 +1000,10 @@ namespace Unity.VersionControl.Git.IO
                     "You are attempting an operation that is not valid on a root level directory");
         }
 
-        private void ThrowIfNotInitialized()
+        public void ThrowIfNotInitialized([CallerMemberName] string caller = null)
         {
             if (!IsInitialized)
-                throw new InvalidOperationException("You are attemping an operation on an null path");
+                throw new InvalidOperationException($"You are attemping an operation on an null path at {caller}");
         }
 
         private static void ThrowIfNotInitialized(SPath path)

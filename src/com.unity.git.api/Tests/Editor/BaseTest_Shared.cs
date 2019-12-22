@@ -16,7 +16,6 @@ namespace BaseTests
     using System;
     using System.Threading;
     using TestWebServer;
-    using Unity.Editor.Tasks.Internal.IO;
     using Unity.VersionControl.Git.IO;
 
     internal class TestRepoData
