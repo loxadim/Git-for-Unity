@@ -21,7 +21,7 @@ namespace UnitTests
 
             var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(@"c:\Projects\UnityProject".ToSPath());
-            environment.UnityProjectPath.Returns(@"c:\Projects\UnityProject".ToSPath());
+            environment.UnityProjectPath.Returns(@"c:\Projects\UnityProject");
 
             var gitObjectFactory = new GitObjectFactory(environment);
             var gitStatusEntry = gitObjectFactory.CreateGitStatusEntry("hello.txt", GitFileStatus.None, GitFileStatus.Deleted);
@@ -40,7 +40,7 @@ namespace UnitTests
 
             var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(@"c:\Projects\UnityProject".ToSPath());
-            environment.UnityProjectPath.Returns(@"c:\Projects\UnityProject".ToSPath());
+            environment.UnityProjectPath.Returns(@"c:\Projects\UnityProject");
 
             var gitObjectFactory = new GitObjectFactory(environment);
             var gitStatusEntry = gitObjectFactory.CreateGitStatusEntry("c:UsersOculusGoVideo.mp4", GitFileStatus.None, GitFileStatus.Deleted);

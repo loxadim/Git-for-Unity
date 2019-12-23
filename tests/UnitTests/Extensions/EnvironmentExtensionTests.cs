@@ -37,7 +37,7 @@ namespace UnitTests
         {
             var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
-            environment.UnityProjectPath.Returns(projectPath.ToSPath());
+            environment.UnityProjectPath.Returns(projectPath);
 
             SPath nExpected = expected.ToSPath();
             var repositoryFilePath = path.ToSPath().RelativeToRepository(environment);
@@ -52,7 +52,7 @@ namespace UnitTests
         {
             var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
-            environment.UnityProjectPath.Returns(projectPath.ToSPath());
+            environment.UnityProjectPath.Returns(projectPath);
 
             Action act = () => path.ToSPath().RelativeToRepository(environment);
             act.Should().Throw<InvalidOperationException>();
@@ -67,7 +67,7 @@ namespace UnitTests
         {
             var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
-            environment.UnityProjectPath.Returns(projectPath.ToSPath());
+            environment.UnityProjectPath.Returns(projectPath);
 
             SPath nExpected = expected.ToSPath();
             var repositoryFilePath = path.ToSPath().RelativeToProject(environment);
@@ -82,7 +82,7 @@ namespace UnitTests
         {
             var environment = Substitute.For<IGitEnvironment>();
             environment.RepositoryPath.Returns(repositoryPath.ToSPath());
-            environment.UnityProjectPath.Returns(projectPath.ToSPath());
+            environment.UnityProjectPath.Returns(projectPath);
 
             Action act = () => path.ToSPath().RelativeToProject(environment);
             act.Should().Throw<InvalidOperationException>();

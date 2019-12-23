@@ -1145,12 +1145,7 @@ namespace Unity.VersionControl.Git.IO
 #if UNITY_STANDALONE
                     _fileSystem = new FileSystem(UnityEngine.Application.dataPath);
 #else
-                    if (Guard.InUnitTestRunner)
-                    {
-                        
-                    }
-                    else
-                        _fileSystem = new FileSystem(Directory.GetCurrentDirectory());
+                    _fileSystem = new FileSystem(Directory.GetCurrentDirectory());
 #endif
                 }
                 return _fileSystem;

@@ -40,7 +40,7 @@ namespace TestUtils
             var logger = LogHelper.GetLogger("TestFileSystem");
 
             fileSystem.DirectorySeparatorChar.Returns(realFileSystem.DirectorySeparatorChar);
-            //fileSystem.GetCurrentDirectory().Returns(createFileSystemOptions.CurrentDirectory);
+            fileSystem.CurrentDirectory.Returns(createFileSystemOptions.CurrentDirectory);
 
             fileSystem.FileExists(Args.String).Returns(info => {
                 var path = (string)info[0];

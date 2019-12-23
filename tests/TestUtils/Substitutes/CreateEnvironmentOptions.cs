@@ -15,16 +15,15 @@ namespace TestUtils
             path.EnsureDirectoryExists();
             Extensionfolder = path.Combine(DefaultExtensionFolder);
             UserProfilePath = path.Combine(DefaultUserProfilePath);
-            UnityProjectPath = path.Combine(DefaultUnityProjectPathAndRepositoryPath);
+            UnityProjectPath = path.Combine(DefaultUnityProjectPathAndRepositoryPath).EnsureDirectoryExists();
             RepositoryPath = path.Combine(DefaultUnityProjectPathAndRepositoryPath);
             Extensionfolder.EnsureDirectoryExists();
             UserProfilePath.EnsureDirectoryExists();
-            UnityProjectPath.EnsureDirectoryExists();
         }
 
         public SPath Extensionfolder { get; set; }
         public SPath UserProfilePath { get; set; }
-        public SPath UnityProjectPath { get; set; }
+        public string UnityProjectPath { get; set; }
         public string RepositoryPath { get; set; }
     }
 }
