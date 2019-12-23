@@ -30,12 +30,14 @@ namespace Unity.VersionControl.Git
         public static Package Load(ITaskManager taskManager, IGitEnvironment environment, UriString packageFeed)
         {
             Package package = null;
+
             var filename = packageFeed.Filename.ToSPath();
             if (!filename.IsInitialized || filename.IsRoot)
                 return package;
+
             var key = filename.FileNameWithoutExtension + "_updatelastCheckTime";
             var now = DateTimeOffset.Now;
-            SPath feed = environment.UserCachePath.Combine(packageFeed.Filename);
+            var feed = environment.UserCachePath.Combine(packageFeed.Filename);
 
             if (!feed.FileExists() || now.Date > environment.UserSettings.Get<DateTimeOffset>(key).Date)
             {

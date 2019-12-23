@@ -12,8 +12,12 @@ namespace BaseTests
 {
 	public partial class BaseTest
 	{
-		internal TestData StartTest(string testRepoName = null, bool withHttpServer = false, [CallerMemberName] string testName = "test") =>
-            new TestData(testName, new LogFacade(testName, new NUnitLogAdapter(), false), testRepoName, withHttpServer);
+		internal TestData StartTest(string testRepoName = null, bool withHttpServer = false,
+            ICacheContainer cacheContainer = null,
+            IFileSystem fileSystem = null,
+            [CallerMemberName] string testName = "test") =>
+            new TestData(testName, new LogFacade(testName, new NUnitLogAdapter(), false), testRepoName, withHttpServer,
+                cacheContainer, fileSystem);
 
 		protected async Task RunTest(Func<IEnumerator> testMethodToRun)
 		{

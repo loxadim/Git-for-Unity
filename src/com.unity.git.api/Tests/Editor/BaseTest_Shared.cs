@@ -74,36 +74,50 @@ namespace BaseTests
         public const string TestRepoMasterCleanUnsynchronizedRussianLanguage = "IOTestsRepo_master_clean_sync_with_russian_language";
         public const string TestRepoMasterDirtyUnsynchronized = "IOTestsRepo_master_dirty_unsync";
         public const string TestRepoMasterTwoRemotes = "IOTestsRepo_master_two_remotes";
+        public const string DefaultExtensionFolder = "ExtensionFolder";
+        public const string DefaultUserProfilePath = "UserProfile";
+        public const string DefaultUnityProjectPathAndRepositoryPath = "UnityProject";
 
         private readonly CancellationTokenSource cts;
 
-		public TestData(string testName, ILogging logger, string testRepoName = null, bool withHttpServer = false)
-		{
-			TestName = testName;
-			Logger = logger;
-			Watch = new Stopwatch();
+        public TestData(string testName, ILogging logger, string testRepoName = null, bool withHttpServer = false,
+            ICacheContainer cacheContainer = null,
+            IFileSystem fileSystem = null)
+        {
+            TestName = testName;
+            Logger = logger;
+            Watch = new Stopwatch();
             SourceDirectory = TestContext.CurrentContext.TestDirectory.ToSPath();
             TestPath = SPath.CreateTempDirectory(testName);
-            SPath.FileSystem = new FileSystem(TestPath);
+            SPath.FileSystem = fileSystem ?? new FileSystem(TestPath);
 
-            var cacheContainer = new CacheContainer();
-            cacheContainer.SetCacheInitializer(CacheType.Branches, () => BranchesCache.Instance);
-            cacheContainer.SetCacheInitializer(CacheType.GitAheadBehind, () => GitAheadBehindCache.Instance);
-            cacheContainer.SetCacheInitializer(CacheType.GitLocks, () => GitLocksCache.Instance);
-            cacheContainer.SetCacheInitializer(CacheType.GitLog, () => GitLogCache.Instance);
-            cacheContainer.SetCacheInitializer(CacheType.GitStatus, () => GitStatusCache.Instance);
-            cacheContainer.SetCacheInitializer(CacheType.GitUser, () => GitUserCache.Instance);
-            cacheContainer.SetCacheInitializer(CacheType.RepositoryInfo, () => RepositoryInfoCache.Instance);
+            if (cacheContainer == null)
+            {
+                var container = new CacheContainer();
+                container.SetCacheInitializer(CacheType.Branches, () => BranchesCache.Instance);
+                container.SetCacheInitializer(CacheType.GitAheadBehind, () => GitAheadBehindCache.Instance);
+                container.SetCacheInitializer(CacheType.GitLocks, () => GitLocksCache.Instance);
+                container.SetCacheInitializer(CacheType.GitLog, () => GitLogCache.Instance);
+                container.SetCacheInitializer(CacheType.GitStatus, () => GitStatusCache.Instance);
+                container.SetCacheInitializer(CacheType.GitUser, () => GitUserCache.Instance);
+                container.SetCacheInitializer(CacheType.RepositoryInfo, () => RepositoryInfoCache.Instance);
+                cacheContainer = container;
+            }
+
 
             Environment = new IntegrationTestEnvironment(cacheContainer, TestPath, TestPath.Parent, testName);
-            InitializeEnvironment();
+            InitializeEnvironment(testRepoName);
 
             ApplicationManager = new ApplicationManagerBase(new MainThreadSynchronizationContext(), Environment);
 
             if (testRepoName != null)
             {
+                var testZipFilePath = SourceDirectory.Combine("IOTestsRepo.zip");
+                ZipHelper.Instance.Extract(testZipFilePath, TestPath, (_, __) => { }, (value, total, name) => true, token: TaskManager.Token);
+                TestRepo = new TestRepoData(this, testRepoName);
+
                 InstallTestGit();
-                PrepareTestRepository(testRepoName);
+                InitializeRepository();
             }
 
             if (withHttpServer)
@@ -123,12 +137,8 @@ namespace BaseTests
 			Watch.Start();
 		}
 
-        public void PrepareTestRepository(string repoName)
+        public void InitializeRepository()
         {
-            var testZipFilePath = SourceDirectory.Combine("IOTestsRepo.zip");
-            ZipHelper.Instance.Extract(testZipFilePath, TestPath, (_, __) => { }, (value, total, name) => true, token: TaskManager.Token);
-
-            TestRepo = new TestRepoData(this, repoName);
             RepositoryManager = Unity.VersionControl.Git.RepositoryManager.CreateInstance(Platform, TaskManager, GitClient, TestRepo.RepoPath);
             RepositoryManager.Initialize();
 
@@ -172,9 +182,14 @@ namespace BaseTests
         }
 
 
-        private void InitializeEnvironment()
+        private void InitializeEnvironment(string testRepoName)
 		{
-			var projectPath = TestPath.Combine("project").EnsureDirectoryExists();
+            var projectPath = TestPath.Combine(DefaultUnityProjectPathAndRepositoryPath);
+
+            if (testRepoName != null)
+            {
+                projectPath = TestPath.Combine("IOTestsRepo", testRepoName);
+            }
 
 #if UNITY_EDITOR
 			Environment.Initialize(SPath.Default, projectPath, TheEnvironment.instance.Environment.UnityVersion, TheEnvironment.instance.Environment.UnityApplication, TheEnvironment.instance.Environment.UnityApplicationContents);
@@ -287,7 +302,22 @@ namespace BaseTests
 
 	internal static class TestExtensions
 	{
-		public static void Matches(this IEnumerable actual, IEnumerable expected)
+        public static void Matches(this GitBranch branch, GitBranch other)
+        {
+            Assert.AreEqual(other, branch);
+        }
+
+        public static void Matches(this GitRemote branch, GitRemote other)
+        {
+            Assert.AreEqual(other, branch);
+        }
+
+        public static void Matches(this GitStatus branch, GitStatus other)
+        {
+            Assert.AreEqual(other, branch);
+        }
+
+        public static void Matches(this IEnumerable actual, IEnumerable expected)
 		{
 			CollectionAssert.AreEqual(expected, actual, $"{Environment.NewLine}expected:{expected.Join()}{Environment.NewLine}actual  :{actual.Join()}{Environment.NewLine}");
 		}

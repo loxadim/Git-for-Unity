@@ -8,7 +8,7 @@ using Unity.VersionControl.Git.IO;
 namespace IntegrationTests
 {
     [TestFixture]
-    class A_GitClientTests : BaseTests.BaseTest
+    class A_GitClientTests : BaseTest
     {
         readonly string[] m_CleanFiles = { "file1.txt", "file2.txt", "file3.txt" };
 

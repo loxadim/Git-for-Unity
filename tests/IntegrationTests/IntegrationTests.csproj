@@ -42,7 +42,6 @@
     <Compile Remove="BaseGitEnvironmentTest.cs" />
     <Compile Remove="BaseIntegrationTest.cs" />
     <Compile Remove="BaseTest_old.cs" />
-    <Compile Remove="Download\BaseTestWithHttpServer.cs" />
     <Compile Remove="SetUpFixture.cs" />
   </ItemGroup>
 
@@ -50,7 +49,6 @@
     <None Include="BaseGitEnvironmentTest.cs" />
     <None Include="BaseIntegrationTest.cs" />
     <None Include="BaseTest_old.cs" />
-    <None Include="Download\BaseTestWithHttpServer.cs" />
     <None Include="IOTestsRepo.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

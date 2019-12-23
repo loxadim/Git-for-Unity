@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="SolutionInfo.cs" />
-    <EmbeddedResource Include="PlatformResources\**\gitconfig;PlatformResources\**\git-lfs.json;PlatformResources\windows\git.json" />
+    <EmbeddedResource Include="PlatformResources\**\gitconfig" />
     <EmbeddedResource Include="Resources\*" Exclude="Resources\*.meta" />
   </ItemGroup>
 
@@ -159,7 +159,7 @@
     </VersionFiles>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
-    <PackageReference Include="com.unity.editor.tasks" Version="1.2.22" />
+    <PackageReference Include="com.unity.editor.tasks" Version="1.2.23" />
   </ItemGroup>
 
   <Import Project="$(SolutionDir)\common\packaging.targets" Condition=" '$(TargetFramework)' == 'net471' " />
