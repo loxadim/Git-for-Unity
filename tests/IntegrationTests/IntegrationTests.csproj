@@ -22,7 +22,6 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\com.unity.git.api\Logging\Logging.csproj" />
     <ProjectReference Include="..\TestUtils\TestUtils.csproj" />
     <ProjectReference Include="..\..\src\com.unity.git.api\Api\Api.csproj" />
     <ProjectReference Include="..\TestWebServer\TestWebServer.csproj" />
@@ -39,20 +38,14 @@
     <None Remove="TestResults\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="BaseGitEnvironmentTest.cs" />
-    <Compile Remove="BaseIntegrationTest.cs" />
     <Compile Remove="BaseTest_old.cs" />
-    <Compile Remove="SetUpFixture.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="BaseGitEnvironmentTest.cs" />
-    <None Include="BaseIntegrationTest.cs" />
     <None Include="BaseTest_old.cs" />
     <None Include="IOTestsRepo.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SetUpFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

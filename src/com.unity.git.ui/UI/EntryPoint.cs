@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Logging;
 using UnityEditor;
 using UnityEngine;
 

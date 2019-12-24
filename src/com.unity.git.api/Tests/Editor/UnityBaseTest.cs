@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using Unity.Editor.Tasks;
 using Unity.Editor.Tasks.Logging;
+using Unity.VersionControl.Git.IO;
 using UnityEngine.TestTools;
 using Debug = UnityEngine.Debug;
 

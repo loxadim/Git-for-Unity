@@ -1,6 +1,8 @@
 {
-    "name": "Unity.Git.Logging",
-    "references": [],
+    "name": "com.unity.git",
+    "references": [
+        "com.unity.git.logging"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"

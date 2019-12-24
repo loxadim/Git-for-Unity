@@ -1,7 +1,9 @@
 using Unity.VersionControl.Git;
 using System;
 using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Extensions;
 using Unity.Editor.Tasks.Helpers;
+using Unity.Editor.Tasks.Logging;
 
 namespace Unity.VersionControl.Git
 {

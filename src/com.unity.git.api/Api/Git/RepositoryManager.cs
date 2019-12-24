@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Logging;
 
 namespace Unity.VersionControl.Git
 {

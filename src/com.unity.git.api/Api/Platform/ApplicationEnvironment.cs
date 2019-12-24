@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Logging;
 
 namespace Unity.VersionControl.Git
 {

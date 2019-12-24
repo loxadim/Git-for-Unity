@@ -6,6 +6,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Editor.Tasks.Logging;
 
 namespace Unity.VersionControl.Git
 {

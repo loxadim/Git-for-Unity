@@ -1,6 +1,7 @@
 using Unity.VersionControl.Git;
 using System;
 using System.Text.RegularExpressions;
+using Unity.Editor.Tasks.Logging;
 
 namespace Unity.VersionControl.Git
 {

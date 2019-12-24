@@ -10,6 +10,7 @@ namespace IntegrationTests
 {
     class UpdateChecksAndDownloads : BaseTest
     {
+#if NUNIT
         [Test]
         public async Task DownloadAndVerificationWorks()
         {
@@ -31,5 +32,6 @@ namespace IntegrationTests
                 Assert.AreEqual(test.SourceDirectory.Combine("files/unity/releases/github-for-unity-99.2.0-beta1.unitypackage").CalculateMD5(), result[0].File.ToSPath().CalculateMD5());
             }
         }
+#endif
     }
 }

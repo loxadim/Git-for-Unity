@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Extensions;
+using Unity.Editor.Tasks.Logging;
 using Unity.VersionControl.Git;
 using Unity.VersionControl.Git.IO;
 

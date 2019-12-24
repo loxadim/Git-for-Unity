@@ -1,5 +1,6 @@
 using Unity.VersionControl.Git;
 using System;
+using Unity.Editor.Tasks.Logging;
 using UnityEditor;
 using UnityEngine;
 

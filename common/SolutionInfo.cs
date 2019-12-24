@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("TestUtils", AllInternalsVisible = true)]
 [assembly: InternalsVisibleTo("UnitTests", AllInternalsVisible = true)]
+[assembly: InternalsVisibleTo("com.unity.git.tests", AllInternalsVisible = true)]
+[assembly: InternalsVisibleTo("com.unity.git.tests.editor", AllInternalsVisible = true)]
 [assembly: InternalsVisibleTo("IntegrationTests", AllInternalsVisible = true)]
 [assembly: InternalsVisibleTo("TaskSystemIntegrationTests", AllInternalsVisible = true)]
 //Required for NSubstitute

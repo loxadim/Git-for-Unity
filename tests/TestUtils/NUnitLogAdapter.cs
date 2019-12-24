@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using Unity.VersionControl.Git;
+using Unity.Editor.Tasks.Logging;
 
 namespace BaseTests
 {

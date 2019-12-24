@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using sfw.net;
+using Unity.Editor.Tasks.Logging;
 
 namespace Unity.VersionControl.Git
 {

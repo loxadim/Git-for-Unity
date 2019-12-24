@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using NSubstitute;
 using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Logging;
 using Unity.VersionControl.Git;
 using Unity.VersionControl.Git.IO;
 

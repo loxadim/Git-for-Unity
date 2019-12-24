@@ -10,7 +10,6 @@
   <Import Project="$(SolutionDir)\common\unityreferences.targets" />
   <ItemGroup>
     <ProjectReference Include="..\..\com.unity.git.api\Api\Api.csproj" />
-    <ProjectReference Include="..\..\com.unity.git.api\Logging\Logging.csproj" />
     <ProjectReference Include="..\Shim\UnityShim.csproj" />
     <ProjectReference Include="..\..\Localization\Localization.csproj" Condition="'$(MSBuildRuntimeType)' != 'Core'" />
     <Reference Include="Unity.VersionControl.Git.Localization.dll" Condition="'$(MSBuildRuntimeType)' == 'Core'">

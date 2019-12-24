@@ -1,9 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEngine;
-using UnityEditor;
-using UnityEngine.TestTools;
-using NUnit.Framework;
-using System.Collections;
+﻿using NUnit.Framework;
 using Unity.VersionControl.Git;
 
 public class VersionTests
@@ -217,4 +212,3 @@ public class VersionTests
         Assert.AreEqual(TheVersion.Default, ret);
     }
 }
-#endif

@@ -8,15 +8,19 @@ using NUnit.Framework;
 using Unity.Editor.Tasks;
 using Unity.Editor.Tasks.Extensions;
 using Unity.Editor.Tasks.Helpers;
+using Unity.Editor.Tasks.Logging;
 using Unity.VersionControl.Git;
 
 namespace BaseTests
 {
     using IntegrationTests;
+#if NUNIT
+    using TestWebServer;
+#endif
     using System;
     using System.Threading;
-    using TestWebServer;
     using Unity.VersionControl.Git.IO;
+    using ILogging = Unity.Editor.Tasks.Logging.ILogging;
 
     internal class TestRepoData
     {
@@ -65,7 +69,9 @@ namespace BaseTests
         public IRepository Repository => Environment.Repository;
 
         public IRepositoryManager RepositoryManager { get; private set; }
+#if NUNIT
         public readonly HttpServer HttpServer;
+#endif
 
         public TestRepoData TestRepo { get; private set; }
 
@@ -120,6 +126,7 @@ namespace BaseTests
                 InitializeRepository();
             }
 
+#if NUNIT
             if (withHttpServer)
             {
                 var filesToServePath = SourceDirectory.Combine("files");
@@ -130,7 +137,7 @@ namespace BaseTests
                 task.Start();
                 started.Wait();
             }
-
+#endif
             ((ApplicationManagerBase)ApplicationManager).Initialize();
 
             Logger.Trace($"START {testName}");
@@ -219,6 +226,7 @@ namespace BaseTests
 		{
 			Watch.Stop();
 
+#if NUNIT
             try
             {
                 if (HttpServer != null)
@@ -226,7 +234,7 @@ namespace BaseTests
                     HttpServer.Stop();
                 }
             } catch { }
-
+#endif
             ProcessManager.Dispose();
 			if (SynchronizationContext.Current is IMainThreadSynchronizationContext ourContext)
 				ourContext.Dispose();

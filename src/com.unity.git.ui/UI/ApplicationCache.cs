@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
+using Unity.Editor.Tasks.Logging;
 using UnityEditor;
 using UnityEngine;
 using Application = UnityEngine.Application;

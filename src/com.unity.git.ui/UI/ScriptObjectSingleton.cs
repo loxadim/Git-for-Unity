@@ -1,6 +1,7 @@
 using Unity.VersionControl.Git;
 using System;
 using System.Linq;
+using Unity.Editor.Tasks.Logging;
 using UnityEditorInternal;
 using UnityEngine;
 

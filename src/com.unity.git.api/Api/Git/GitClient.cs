@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Logging;
 using Unity.VersionControl.Git.Tasks;
 using static Unity.VersionControl.Git.GitInstaller;
 

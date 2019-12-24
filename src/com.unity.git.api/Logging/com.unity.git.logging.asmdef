@@ -1,11 +1,7 @@
 {
-    "name": "Unity.Git.UnityTests",
-    "references": [
-        "Unity.Git.Api"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
+    "name": "com.unity.git.logging",
+    "references": [],
+    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -13,6 +9,6 @@
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": []
 }

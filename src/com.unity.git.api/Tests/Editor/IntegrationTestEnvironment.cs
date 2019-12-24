@@ -3,8 +3,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Logging;
 using Unity.VersionControl.Git;
 using Unity.VersionControl.Git.IO;
+using ILogging = Unity.Editor.Tasks.Logging.ILogging;
+using LogHelper = Unity.Editor.Tasks.Logging.LogHelper;
 
 namespace IntegrationTests
 {

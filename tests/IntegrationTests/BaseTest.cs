@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Unity.Editor.Tasks;
+using Unity.Editor.Tasks.Logging;
 using Unity.VersionControl.Git;
 using Unity.VersionControl.Git.IO;
 
