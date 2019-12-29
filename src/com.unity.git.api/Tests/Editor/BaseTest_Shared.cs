@@ -251,10 +251,8 @@ namespace BaseTests
 
 	public partial class BaseTest
 	{
-		protected const int Timeout = 30000;
+		protected const int Timeout = 5000;
 		protected const int RandomSeed = 120938;
-
-
 
 		protected void StartTrackTime(Stopwatch watch, ILogging logger, string message = "")
 		{
