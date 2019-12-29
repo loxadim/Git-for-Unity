@@ -12,6 +12,9 @@
     <RootNamespace>IntegrationTests</RootNamespace>
     <AssemblyName>IntegrationTests</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;NUNIT</DefineConstants>
+  </PropertyGroup>
   <Import Project="$(RootDir)\common\properties.props" />
   <Import Project="$(RootDir)\common\tests.props" />  
   <ItemGroup>
@@ -39,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="BaseTest_old.cs" />
+    <Compile Remove="Metrics\MetricsTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,5 +72,8 @@
     <None Update="UnzipTestResources\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Metrics\" />
   </ItemGroup>
 </Project>

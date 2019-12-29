@@ -207,6 +207,7 @@ namespace Unity.VersionControl.Git
                 return state;
             }
             var version = new GitVersionTask(TaskManager, platform.DefaultProcessEnvironment, state.GitExecutablePath)
+                          .Configure(platform.ProcessManager)
                           .Progress(progressReporter.UpdateProgress)
                           .Catch(e => true)
                           .RunSynchronously();
@@ -223,7 +224,8 @@ namespace Unity.VersionControl.Git
                 state.GitLfsIsValid = false;
                 return state;
             }
-            var version = new GitVersionTask(TaskManager, platform.DefaultProcessEnvironment, state.GitLfsExecutablePath)
+            var version = new GitLfsVersionTask(TaskManager, platform.DefaultProcessEnvironment, state.GitLfsExecutablePath)
+                    .Configure(platform.ProcessManager)
                     .Progress(progressReporter.UpdateProgress)
                     .Catch(e => true)
                     .RunSynchronously();
@@ -325,8 +327,7 @@ namespace Unity.VersionControl.Git
 
                     CopyHelper.Copy(gitExtractPath, target);
 
-                    state.GitIsValid = true;
-
+                    state.GitIsValid = state.GitLfsIsValid = true;
                     state.IsCustomGitPath = state.GitExecutablePath != installDetails.GitExecutablePath;
                 }
             }

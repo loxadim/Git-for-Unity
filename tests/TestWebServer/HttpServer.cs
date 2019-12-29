@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using Unity.Editor.Tasks.Logging;
 using Unity.VersionControl.Git;
+using Unity.VersionControl.Git.IO;
 
 namespace TestWebServer
 {
@@ -127,7 +128,17 @@ namespace TestWebServer
                 context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
                 context.Response.AddHeader("Last-Modified", File.GetLastWriteTime(filename).ToString("r"));
 
-                using (var input = new FileStream(filename, FileMode.Open))
+                Stream input = null;
+                if (filename.ToSPath().FileName == "embedded-git.json")
+                {
+                    input = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(filename).Replace(":50000", $":{Port}")));
+                }
+                else
+                {
+                    input = new FileStream(filename, FileMode.Open);
+                }
+
+                using (input)
                 {
                     var length = input.Length;
                     var range = context.Request.Headers["Range"];

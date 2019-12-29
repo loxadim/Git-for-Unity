@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Unity.VersionControl.Git;
 
+[TestFixture]
 public class VersionTests
 {
     [Test]
