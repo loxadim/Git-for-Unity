@@ -36,7 +36,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanSynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -74,7 +75,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanSynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -122,7 +124,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanSynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -218,7 +221,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanSynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -296,7 +300,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanSynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -337,7 +342,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanSynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -380,7 +386,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanSynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -457,7 +464,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanSynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -518,7 +526,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterTwoRemotes,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -579,7 +588,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanSynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 
@@ -621,7 +631,8 @@
 //                var repositoryManagerListener = Substitute.For<IRepositoryManagerListener>();
 
 //                InitializePlatformAndEnvironment(TestRepoMasterCleanUnsynchronized,
-//                    onRepositoryManagerCreated: manager => {
+//                    onRepositoryManagerCreated: manager =>
+//                    {
 //                        repositoryManagerListener.AttachListener(manager, repositoryManagerEvents);
 //                    });
 

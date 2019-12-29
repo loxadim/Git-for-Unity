@@ -242,7 +242,8 @@ namespace Unity.VersionControl.Git
             if (state.GitInstallationPath != installDetails.GitInstallationPath)
                 return state;
 
-            state.GitPackage = DugiteReleaseManifest.Load(TaskManager, installDetails.GitManifest, GitInstallDetails.GitPackageFeed, platform.Environment);
+            state.GitPackage = DugiteReleaseManifest.Load(TaskManager, installDetails.GitManifest,
+                installDetails.GitManifestFeed, platform.Environment);
             if (state.GitPackage == null)
                 return state;
 
@@ -417,8 +418,8 @@ namespace Unity.VersionControl.Git
 
         public class GitInstallDetails
         {
-            public static string GitPackageName { get; } = "embedded-git.json";
-            private const string packageFeed = "https://api.github.com/repos/github-for-unity/dugite-native/releases/latest";
+            public const string ManifestName = "embedded-git.json";
+            public const string ManifestFeed = "https://api.github.com/repos/github-for-unity/dugite-native/releases/latest";
 
             public const string GitDirectory = "git";
 
@@ -435,7 +436,7 @@ namespace Unity.VersionControl.Git
                     GitLfsExecutablePath = GitLfsInstallationPath.Combine(environment.Is32Bit ? "mingw32" : "mingw64");
                 GitLfsExecutablePath = GitLfsExecutablePath.Combine("libexec", "git-core");
                 GitLfsExecutablePath = GitLfsExecutablePath.Combine("git-lfs" + environment.ExecutableExtension);
-                GitManifest = baseDataPath.Combine(GitPackageName);
+                GitManifest = baseDataPath.Combine(GitManifestName);
             }
 
             public GitInstallationState GetDefaults()
@@ -453,7 +454,8 @@ namespace Unity.VersionControl.Git
             public SPath GitLfsInstallationPath { get; }
             public SPath GitExecutablePath { get; }
             public SPath GitLfsExecutablePath { get; }
-            public static UriString GitPackageFeed { get; set; } = packageFeed;
+            public UriString GitManifestFeed { get; set;  } = ManifestFeed;
+            public string GitManifestName { get; set; } = ManifestName;
             public SPath GitManifest { get; set; }
         }
     }

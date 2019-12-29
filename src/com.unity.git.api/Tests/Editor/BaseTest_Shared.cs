@@ -172,7 +172,8 @@ namespace BaseTests
             localCache.CopyFiles(installDetails.ZipPath.Parent, true);
             // skip checking for updates
 
-            state.GitPackage = DugiteReleaseManifest.Load(TaskManager, installDetails.GitManifest, GitInstaller.GitInstallDetails.GitPackageFeed, Environment);
+            state.GitPackage = DugiteReleaseManifest.Load(TaskManager, installDetails.GitManifest,
+                GitInstaller.GitInstallDetails.ManifestFeed, Environment);
             var asset = state.GitPackage.DugitePackage;
             state.GitZipPath = installDetails.ZipPath.Combine(asset.Name);
 
