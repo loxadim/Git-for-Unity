@@ -41,20 +41,6 @@
     <PackageName>com.unity.git.ui</PackageName>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Services\AuthenticationService.cs" />
-    <Compile Remove="UI\AuthenticationView.cs" />
-    <Compile Remove="UI\GitHubAuthenticationView.cs" />
-    <Compile Remove="UI\GitHubEnterpriseAuthenticationView.cs" />
-    <Compile Remove="UI\PublishView.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Services\AuthenticationService.cs" />
-    <None Include="UI\AuthenticationView.cs" />
-    <None Include="UI\GitHubAuthenticationView.cs" />
-    <None Include="UI\GitHubEnterpriseAuthenticationView.cs" />
-    <None Include="UI\PublishView.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <VersionFiles Include="$(IntermediateOutputPath)\$(AssemblyName).Version.cs">
       <Project>UI</Project>
     </VersionFiles>
