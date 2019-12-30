@@ -5,6 +5,9 @@
     <ProjectGuid>{69F13D9D-AD56-4EEC-AE10-D528EE23E1A9}</ProjectGuid>
     <RootNamespace>UnitTests</RootNamespace>
     <AssemblyName>UnitTests</AssemblyName>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\common\properties.props" />
   <Import Project="$(SolutionDir)\common\tests.props" />

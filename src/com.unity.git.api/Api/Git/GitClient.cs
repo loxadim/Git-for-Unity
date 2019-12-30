@@ -506,7 +506,8 @@ namespace Unity.VersionControl.Git
         public ITask<string> RemoteAdd(string remote, string url)
         {
             return new GitRemoteAddTask(platform, remote, url, Token)
-                .Configure(platform.ProcessManager);
+                .Configure(platform.ProcessManager)
+                .Then(Fetch(remote));
         }
 
         ///<inheritdoc/>

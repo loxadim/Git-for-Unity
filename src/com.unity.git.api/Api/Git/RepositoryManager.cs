@@ -550,6 +550,7 @@ namespace Unity.VersionControl.Git
         private void WatcherOnRemoteBranchesChanged()
         {
             DataNeedsRefreshing?.Invoke(CacheType.Branches);
+            DataNeedsRefreshing?.Invoke(CacheType.GitAheadBehind);
         }
 
         private void WatcherOnLocalBranchesChanged()
